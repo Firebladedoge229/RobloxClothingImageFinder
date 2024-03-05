@@ -13,7 +13,7 @@ Searches for a Roblox Clothing Item's Image
 
 ## Installation
 
-Run `bash clothing [args]` in Command Prompt
+Run `clothing [args]` in Command Prompt
 
 ## Authors
 
