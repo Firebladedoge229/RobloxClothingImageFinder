@@ -7,8 +7,12 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
-    
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
@@ -24,7 +28,14 @@ jobs:
         pip install requests
 
     - name: Build executable
-      run: pyinstaller --onefile clothing.py
+      run: |
+        if [ ${{ matrix.os }} == 'windows-latest' ]; then
+          pyinstaller --onefile clothing.py
+        elif [ ${{ matrix.os }} == 'macos-latest' ]; then
+          pyinstaller --onefile --osx-bundle-identifier=com.example.clothing clothing.py
+        else
+          pyinstaller --onefile clothing.py
+        fi
 
     - name: Create Release
       id: create_release
@@ -46,6 +57,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./dist/clothing.exe
-        asset_name: clothing.exe
+        asset_path: |
+          ${{ matrix.os == 'windows-latest' && './dist/clothing.exe' || './dist/clothing' }}
+        asset_name: |
+          ${{ matrix.os == 'windows-latest' && 'clothing.exe' || 'clothing' }}
         asset_content_type: application/octet-stream
