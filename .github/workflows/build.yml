@@ -22,7 +22,9 @@ jobs:
       run: pip install pyinstaller
 
     - name: Build executable
-      run: pyinstaller --onefile clothing.py
+      run: |
+        pip install pyinstaller
+        pip install requests
 
     - name: Create Release
       id: create_release
