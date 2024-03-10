@@ -19,12 +19,12 @@ jobs:
         python-version: '3.x'
 
     - name: Install dependencies
-      run: pip install pyinstaller
-
-    - name: Build executable
       run: |
         pip install pyinstaller
         pip install requests
+
+    - name: Build executable
+      run: pyinstaller --onefile clothing.py
 
     - name: Create Release
       id: create_release
