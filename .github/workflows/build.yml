@@ -35,9 +35,9 @@ jobs:
         tag_name: Actions
         release_name: GitHub Actions Release
         body: |
-          Github Actions Release
-        draft: true
-        prerelease: false
+          An automated GitHub actions release.
+        draft: false
+        prerelease: true
 
     - name: Upload Release Asset
       id: upload-release-asset
