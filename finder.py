@@ -1,28 +1,18 @@
 import re
 import time
 import requests
+import http.client
 
 shirt = int(input("Enter Clothing Id: "))
 
 oldId = shirt
 imageId = None
 
-html = None
+creator = int(requests.get(f"https://economy.roblox.com/v2/assets/{shirt}/details").json()["Creator"]["Id"])
 
-try:
-    html = int(re.search(r'data-group-last-edited-by-id="(\d+)"', requests.get(f"https://www.roblox.com/catalog/{str(shirt)}").text).group(1))
-except:
-    pass
+retry_count = 0
 
-creator = None
-isPlayer = html == None
-
-if isPlayer:
-    creator = int(requests.get(f"https://economy.roblox.com/v2/assets/{shirt}/details").json()["Creator"]["Id"])
-else:
-    creator = html
-
-while imageId == None:
+while imageId == None and retry_count < 10:
     try:
         print(f"Searching {str(oldId - 1)}..")
         request = requests.get(f"https://economy.roblox.com/v2/assets/{oldId - 1}/details")
@@ -33,10 +23,18 @@ while imageId == None:
             if clothingCreator == creator:
                 print(f"Found Image: {str(oldId - 1)}")
                 imageId = oldId - 1
+        elif 400 <= request.status_code < 600:
+            print(f"Retrying.. [{retry_count+1}/10]")
+            retry_count += 1
+            time.sleep(1)
         else:
-            print(request.status_code)
+            print(f"{http.client.responses[request.status_code]}: {request.status_code}")
             break
     except Exception as exception:
         print(exception)
-    oldId -= 1
+    if isinstance(request, dict):
+        oldId -= 1
     time.sleep(1)
+
+if retry_count >= 10:
+    print("Max retries reached. Exiting...")
