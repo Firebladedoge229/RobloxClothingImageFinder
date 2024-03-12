@@ -8,8 +8,6 @@ Searches for a Roblox Clothing Item's Image
 ## Commands
 
 \-i --id: Sets the Clothing Item Id\
-\-s --silent: Enables silent mode\
-\-w --wait: Sets the time to wait between requests
 
 ## Installation
 
