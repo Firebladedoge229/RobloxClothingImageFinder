@@ -33,7 +33,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: "v1.${{ github.run_number }}"
-        release_name: GitHub Actions Release v${{ github.run_number }}
+        release_name: GitHub Actions Release v1.${{ github.run_number }}
         body: |
           An automated GitHub actions release.
         draft: false
