@@ -7,7 +7,7 @@ Searches for a Roblox Clothing Item's Image
 
 ## Commands
 
-\-i --id: Sets the Clothing Item Id\
+\-i --id: Sets the Clothing Item Id
 
 ## Installation
 
